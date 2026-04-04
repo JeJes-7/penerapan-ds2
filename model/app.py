@@ -6,7 +6,7 @@ import joblib
 # Load model dan preprocessor
 @st.cache_resource
 def load_models():
-    model = joblib.load('model_rf_best.pkl')
+    model = joblib.load('model_rf_best_compressed.pkl')
     label_encoder = joblib.load('label_encoder.pkl')
     scaler = joblib.load('scaler.pkl')
     return model, label_encoder, scaler

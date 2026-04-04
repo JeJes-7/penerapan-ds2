@@ -1,0 +1,5 @@
+Link Google Looker studio : https://lookerstudio.google.com/reporting/8cb74369-46b5-4903-9915-f5994fa55a61
+Link Streamlit : https://penerapan-ds2-dm4xbnbrax26mraopahefr.streamlit.app/
+Link Github : https://github.com/JeJes-7/penerapan-ds2
+Link Dataset :  https://github.com/dicodingacademy/dicoding_dataset/blob/main/students_performance/data.csv
+

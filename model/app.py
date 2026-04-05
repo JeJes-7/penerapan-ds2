@@ -6,7 +6,11 @@ import joblib
 # Load model dan preprocessor
 @st.cache_resource
 def load_models():
-    model = joblib.load('model_rf_best_compressed.pkl')
+    # Ambil direktori tempat app.py berada
+    base_dir = os.path.dirname(__file__)
+    model_path = os.path.join(base_dir, 'model_rf_best_compressed.pkl')
+    
+    model = joblib.load(model_path)
     label_encoder = joblib.load('label_encoder.pkl')
     scaler = joblib.load('scaler.pkl')
     return model, label_encoder, scaler

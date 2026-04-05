@@ -2,18 +2,43 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import os  # <-- ditambahkan
 
-# Load model dan preprocessor
+# ---------- Load model dan preprocessor ----------
 @st.cache_resource
 def load_models():
-    model = joblib.load('model_rf_best_compressed.pkl')
-    label_encoder = joblib.load('label_encoder.pkl')
-    scaler = joblib.load('scaler.pkl')
-    return model, label_encoder, scaler
+    base_dir = os.path.dirname(__file__)
+    
+    model_path = os.path.join(base_dir, 'model_rf_best_compressed.pkl')
+    le_path = os.path.join(base_dir, 'label_encoder.pkl')
+    scaler_path = os.path.join(base_dir, 'scaler.pkl')
+    
+    # Cek apakah semua file ada
+    missing = []
+    if not os.path.exists(model_path):
+        missing.append("model_rf_best_compressed.pkl")
+    if not os.path.exists(le_path):
+        missing.append("label_encoder.pkl")
+    if not os.path.exists(scaler_path):
+        missing.append("scaler.pkl")
+    
+    if missing:
+        st.error(f"File tidak ditemukan: {', '.join(missing)}. Pastikan file-file tersebut ada di folder yang sama dengan app.py.")
+        st.stop()
+    
+    try:
+        model = joblib.load(model_path)
+        label_encoder = joblib.load(le_path)
+        scaler = joblib.load(scaler_path)
+        return model, label_encoder, scaler
+    except Exception as e:
+        st.error(f"Gagal memuat model/preprocessor: {e}")
+        st.stop()
 
+# Panggil fungsi load
 model, label_encoder, scaler = load_models()
 
-# FUNGSI INPUT
+# ---------- FUNGSI INPUT ----------
 def get_user_input():
     """Mengambil input hanya dari 8 fitur terpenting yang diperlukan untuk prediksi"""
     
@@ -127,7 +152,7 @@ def get_user_input():
     input_df = pd.DataFrame([data])[columns_order]
     return input_df
 
-# MAIN APP
+# ---------- MAIN APP ----------
 st.set_page_config(page_title="Prediksi Status Mahasiswa (Dropout/Graduate)", layout="wide")
 st.title("Jaya Jaya Institut - Prediksi Status Mahasiswa")
 st.info("Sistem ini memprediksi apakah mahasiswa berpotensi **Dropout** atau **Graduate** berdasarkan data semester 1 dan 2.")
